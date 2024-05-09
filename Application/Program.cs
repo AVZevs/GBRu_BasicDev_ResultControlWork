@@ -25,37 +25,53 @@
 [“Russia”, “Denmark”, “Kazan”] → []
 */
 
-
-using System.Linq.Expressions;
-
 int maxLengthSourceString = 3;  // Маскимальная длина строки согласно условию задачи.
 
 // Метод выводит одномерный массив на экран.
 // Массив выводится в квадратных скобках через запятую, элементы выводятся в чистом виде, без какого-либо обрамления.
-void PrintArray(string[] array)
+// Переменная printNullElement отвечает за вывод пустых элементов массива. Если printNullElement = TRUE, то пустые элементы
+// будут выводиться на экран также через запятую, что просто некрасиво выглядит. Если же printNullElement = FALSE, то
+// пустые элементы выводиться на экран не будут.
+void PrintArray(string[] array, bool printNullElement)
 {
     Console.Write("[");
     for (int i = 0; i < array.Length; i++)
     {
         if (i < array.Length - 1)
         {
-            Console.Write($"{array[i]}, ");
+            if (printNullElement)
+            {
+                Console.Write($"{array[i]}, ");
+            }
+            else
+            {
+                if (array[i] != null && array[i] != "")
+                        Console.Write($"{array[i]}, ");
+            }    
         }
         else
         {
-            Console.Write($"{array[i]}");
+            if (printNullElement)
+            {
+                Console.Write($"{array[i]}");
+            }
+            else
+            {
+                if (array[i] != null && array[i] != "")
+                    Console.Write($"{array[i]}");
+            }    
         }
-
     }
     Console.Write("]");
 }
 
 // Метод создает новый массив согласно условию задачи. В этот новый массив попадут только строки из массива array[],
-// которые имеют длину до 3-х символов включительно.
+// которые имеют длину до 3-х символов включительно (согласно условию задачи).
+// При этом размер нового массива будет вычисляться динамически, чтобы его размер совпадал с количеством строк,
+// которые удовлетворяют условию задачи.
 string[] CreateNewArray(string[] array)
 {
-    string [] arrayNew = new string[array.Length];
-    int indexForArrayNew = 0;   // Индекс для массива arrayNew (чтобы заполнять его подряд).
+    string[] arrayNew = new string[0]; // Изначально зададим нулевой размер нового массива.
     
     // Проходим по всем елементам массива...
     foreach (var item in array)
@@ -63,11 +79,10 @@ string[] CreateNewArray(string[] array)
         // ... и проверяем условие задачи
         if (item.Length <= maxLengthSourceString)
         {
-            arrayNew[indexForArrayNew] = item;
-            indexForArrayNew++;
+            Array.Resize(ref arrayNew, arrayNew.Length + 1); // Увеличим размер (длину) массива на единицу.
+            arrayNew[arrayNew.Length - 1] = item;
         }
     }
-
     return arrayNew;
 }
 
@@ -76,11 +91,12 @@ string[] sourceStringArray = {"Hello", "2", "world", ":-)", "1234", "1567", "-2"
 
 Console.WriteLine("Исходный массив из строк:");
 Console.WriteLine();
-PrintArray(sourceStringArray);
+PrintArray(sourceStringArray, true);
+Console.WriteLine();
 Console.WriteLine();
 
 Console.WriteLine("Новый массив, полученный из исходного, согласно условию задачи:");
 Console.WriteLine();
 string[] destinationStringArray = CreateNewArray(sourceStringArray);
-PrintArray(destinationStringArray);
+PrintArray(destinationStringArray, false);
 Console.WriteLine();
