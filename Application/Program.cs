@@ -27,11 +27,14 @@
 
 int maxLengthSourceString = 3;  // Маскимальная длина строки согласно условию задачи.
 
+
+// -------------------------------------------------------------------------------------------------------------------
 // Метод выводит одномерный массив на экран.
 // Массив выводится в квадратных скобках через запятую, элементы выводятся в чистом виде, без какого-либо обрамления.
 // Переменная printNullElement отвечает за вывод пустых элементов массива. Если printNullElement = TRUE, то пустые элементы
 // будут выводиться на экран также через запятую, что просто некрасиво выглядит. Если же printNullElement = FALSE, то
 // пустые элементы выводиться на экран не будут.
+// -------------------------------------------------------------------------------------------------------------------
 void PrintArray(string[] array, bool printNullElement)
 {
     Console.Write("[");
@@ -46,8 +49,8 @@ void PrintArray(string[] array, bool printNullElement)
             else
             {
                 if (array[i] != null && array[i] != "")
-                        Console.Write($"{array[i]}, ");
-            }    
+                    Console.Write($"{array[i]}, ");
+            }
         }
         else
         {
@@ -59,20 +62,23 @@ void PrintArray(string[] array, bool printNullElement)
             {
                 if (array[i] != null && array[i] != "")
                     Console.Write($"{array[i]}");
-            }    
+            }
         }
     }
     Console.Write("]");
 }
 
+
+// -------------------------------------------------------------------------------------------------------------------
 // Метод создает новый массив согласно условию задачи. В этот новый массив попадут только строки из массива array[],
 // которые имеют длину до 3-х символов включительно (согласно условию задачи).
 // При этом размер нового массива будет вычисляться динамически, чтобы его размер совпадал с количеством строк,
 // которые удовлетворяют условию задачи.
+// -------------------------------------------------------------------------------------------------------------------
 string[] CreateNewArray(string[] array)
 {
     string[] arrayNew = new string[0]; // Изначально зададим нулевой размер нового массива.
-    
+
     // Проходим по всем елементам массива...
     foreach (var item in array)
     {
@@ -86,17 +92,107 @@ string[] CreateNewArray(string[] array)
     return arrayNew;
 }
 
-// Исходный массив строк. Вариант #1: Массив задан жетско на старте выполнения программы.
-string[] sourceStringArray = {"Hello", "2", "world", ":-)", "1234", "1567", "-2", "computer science", "Russia", "Denmark", "Kazan"};
 
-Console.WriteLine("Исходный массив из строк:");
-Console.WriteLine();
-PrintArray(sourceStringArray, true);
-Console.WriteLine();
-Console.WriteLine();
+// ----------------------------------------------------------------------------------
+// Вывод шапки программы вместе с меню и обеспечение функциональности меню.
+// Здесь мы даем пользователю возможность выбора пункта меню.
+// ----------------------------------------------------------------------------------
+char printMenuAndSelectItem()
+{
+    Console.WriteLine();
+    Console.WriteLine("=======================================================================================================================");
+    Console.WriteLine("Программа из заданного массива строк формирует новый массив из строк, длина которых меньше или равно 3 (трем) символам.");
+    Console.WriteLine("=======================================================================================================================");
+    Console.WriteLine();
+    Console.WriteLine("===================== ОСНОВНОЕ МЕНЮ ====================");
+    Console.WriteLine("[1] - Задать исходный массив с клавиатуры.");
+    Console.WriteLine("[2] - Использовать заданный в программе исходный массив.");
+    Console.WriteLine("--------------------------------------------------------");
+    Console.WriteLine("[0] - Выход из программы.");
+    Console.WriteLine("========================================================");
+    while (true)
+    {
+        Console.Write("Выберите пункт меню: ");
+        var key = Console.ReadKey();
+        if (key.KeyChar == '1' || key.KeyChar == '2' || key.KeyChar == '0')
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            return key.KeyChar;
+        }
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Некорректный выбор.");
+        }
+    }
+}
 
-Console.WriteLine("Новый массив, полученный из исходного, согласно условию задачи:");
-Console.WriteLine();
-string[] destinationStringArray = CreateNewArray(sourceStringArray);
-PrintArray(destinationStringArray, false);
-Console.WriteLine();
+// Исходный массив строк. Массив задан жетско на старте выполнения программы.
+string[] sourceStringArray = { "Hello", "2", "world", ":-)", "1234", "1567", "-2", "computer science", "Russia", "Denmark", "Kazan" };
+
+
+// ----------------------------------------------------------------------------------
+// Метод вывода на экран исходного и результирующего массивов.
+// ----------------------------------------------------------------------------------
+void basicApplicationCode()
+{
+    Console.WriteLine("Исходный массив из строк:");
+    Console.WriteLine();
+    PrintArray(sourceStringArray, true);
+    Console.WriteLine();
+    Console.WriteLine();
+
+    Console.WriteLine("Новый массив, полученный из исходного, согласно условию задачи:");
+    Console.WriteLine();
+    string[] destinationStringArray = CreateNewArray(sourceStringArray);
+    PrintArray(destinationStringArray, false);
+    Console.WriteLine();
+}
+
+// ----------------------------------------------------------------------------------
+// Основной код (Main).
+// ----------------------------------------------------------------------------------
+switch (printMenuAndSelectItem())
+{
+    case '1':
+        // Исходный массив задается пользователем путем ввода значений с клавиатуры.
+        // Ввод завершается при введении пользователем ДВА РАЗА ПОДРЯД пустых значений (null).
+        Console.WriteLine("Задайте исходный массив. Подверждайте ввод каждого элемента нажатием клавиши <Enter>.");
+        Console.WriteLine("Для завершения ввода нажмите клавишу <Enter> два раза.");
+        Array.Resize(ref sourceStringArray, 0);
+        Array.Clear(sourceStringArray);
+        bool firstEnter = false;
+        bool secondEnter = false;
+        string userInputString;
+        while (firstEnter == false || secondEnter == false)
+        {
+            userInputString = Console.ReadLine();
+            if (userInputString == "" && firstEnter == false)
+            {
+                firstEnter = true;
+                continue;
+            } 
+            else if (userInputString == "" && firstEnter)
+            {
+                secondEnter = true;
+                continue;
+            } 
+            else
+            {
+                Array.Resize(ref sourceStringArray, sourceStringArray.Length + 1);
+                sourceStringArray[sourceStringArray.Length - 1] = userInputString;
+                firstEnter = false;
+                secondEnter = false;
+            }            
+        }
+        basicApplicationCode();
+        break;
+    case '2':
+        // Используем массив строк, заданный жестко в программе.
+        basicApplicationCode();
+        break;
+    case '0':
+        break;
+}
+
