@@ -25,3 +25,62 @@
 [“Russia”, “Denmark”, “Kazan”] → []
 */
 
+
+using System.Linq.Expressions;
+
+int maxLengthSourceString = 3;  // Маскимальная длина строки согласно условию задачи.
+
+// Метод выводит одномерный массив на экран.
+// Массив выводится в квадратных скобках через запятую, элементы выводятся в чистом виде, без какого-либо обрамления.
+void PrintArray(string[] array)
+{
+    Console.Write("[");
+    for (int i = 0; i < array.Length; i++)
+    {
+        if (i < array.Length - 1)
+        {
+            Console.Write($"{array[i]}, ");
+        }
+        else
+        {
+            Console.Write($"{array[i]}");
+        }
+
+    }
+    Console.Write("]");
+}
+
+// Метод создает новый массив согласно условию задачи. В этот новый массив попадут только строки из массива array[],
+// которые имеют длину до 3-х символов включительно.
+string[] CreateNewArray(string[] array)
+{
+    string [] arrayNew = new string[array.Length];
+    int indexForArrayNew = 0;   // Индекс для массива arrayNew (чтобы заполнять его подряд).
+    
+    // Проходим по всем елементам массива...
+    foreach (var item in array)
+    {
+        // ... и проверяем условие задачи
+        if (item.Length <= maxLengthSourceString)
+        {
+            arrayNew[indexForArrayNew] = item;
+            indexForArrayNew++;
+        }
+    }
+
+    return arrayNew;
+}
+
+// Исходный массив строк. Вариант #1: Массив задан жетско на старте выполнения программы.
+string[] sourceStringArray = {"Hello", "2", "world", ":-)", "1234", "1567", "-2", "computer science", "Russia", "Denmark", "Kazan"};
+
+Console.WriteLine("Исходный массив из строк:");
+Console.WriteLine();
+PrintArray(sourceStringArray);
+Console.WriteLine();
+
+Console.WriteLine("Новый массив, полученный из исходного, согласно условию задачи:");
+Console.WriteLine();
+string[] destinationStringArray = CreateNewArray(sourceStringArray);
+PrintArray(destinationStringArray);
+Console.WriteLine();
