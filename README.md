@@ -26,6 +26,9 @@
 
 2. Блок-схема программы (PNG): [https://github.com/AVZevs/GBRu_BasicDev_ResultControlWork/blob/main/BlockSchema/blockschema.png](https://github.com/AVZevs/GBRu_BasicDev_ResultControlWork/blob/main/BlockSchema/blockschema.png "Блок-схема программы (PNG)")
 
+3. Блок-схема программы (DrawIO в ZIP): [https://github.com/AVZevs/GBRu_BasicDev_ResultControlWork/blob/main/BlockSchema/blockschema_drawio.zip](https://github.com/AVZevs/GBRu_BasicDev_ResultControlWork/blob/main/BlockSchema/blockschema_drawio.zip "Блок-схема программы (DrawIO в ZIP)")
+
+
 ## Алгоритм работы программы
 
 При запуске программы пользователю выводится основное меню, которое позволяет выбрать способ задания исходного массива - либо через ввод строк (элементов массива) с клавиатуры построчно (ввод каждого элемента подтверждается нажатием клавиши "Enter"), либо использовать заранее подготовленный массив строк, заданный в коде программы.
